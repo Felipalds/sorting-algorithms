@@ -47,13 +47,14 @@ func main() {
   i := 0
   for i < 1000 { //Here starts the count till 100k
     j := 0
-    var name string
     var id int
+    var firstname string
+    var lastname string
+    var lastLastname string
     for j <= 999 {// Firts we will get 1000, then 0-2000...
-      fmt.Fscanf(personReader, "%d%s\n", &id, &name)
-      fmt.Println(id, name)
+      fmt.Fscanf(personReader, "%d %s\n",&id, &firstname, &lastname, &lastLastname)
       person := Person{
-        name:name,
+        name:firstname + " " + lastname + " " + lastLastname,
         id: id,
       }
       fmt.Println(person)
