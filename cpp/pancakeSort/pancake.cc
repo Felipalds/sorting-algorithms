@@ -66,7 +66,7 @@ int main(){
 
     int i = 0;
     int j = 0;
-    while (i < 1000) {
+    while (i < 100000) {
         j = 0;
         while (j <= 999){
           int num;
