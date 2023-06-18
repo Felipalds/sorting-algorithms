@@ -87,7 +87,6 @@ int main(){
         fprintf(out, "%lu,%f,%li,%li\n",namesVector.size(), elapsed, compairsons,swaps);
         i += 1000;
         printVector(namesVector);
-        rewind(in);
         compairsons = 0;
         swaps = 0;
     }

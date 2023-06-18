@@ -12,15 +12,15 @@ typedef struct Person {
     int id;
 } Person;
 
-void printVector(vector<Person> personVector){
+void printVector(vector<string>& personVector){
     int l = personVector.size();
     printf("[");
     for (int i = 0; i < l; i++){
-      cout << personVector[i].id << " "<< personVector[i].name << ", ";
+      cout << personVector[i] << ", ";
     }
     printf("]");
 }
-void flip(vector<Person>& personVector, int maxInd){
+void flip(vector<string>& personVector, int maxInd){
     int left = 0;
     while(left < maxInd){
         compairsons++;
@@ -31,11 +31,11 @@ void flip(vector<Person>& personVector, int maxInd){
     }
 }
 
-int maxIndex(const vector<Person>& personVector, int virtualLen) {
+int maxIndex(const vector<string>& personVector, int virtualLen) {
     int index = 0;
     for (int i = 0; i < virtualLen; i++){
         compairsons++;
-        if(personVector[i].id > personVector[index].id){
+        if(personVector[i] > personVector[index]){
             compairsons++;
             index = i;
         }
@@ -43,7 +43,7 @@ int maxIndex(const vector<Person>& personVector, int virtualLen) {
     return index;
 }
 
-void pancakeSort(vector<Person>& personVector){
+void pancakeSort(vector<string>& personVector){
     int l = personVector.size();
     while (l >= 1) {
       compairsons++;
@@ -67,7 +67,7 @@ int main(){
     ifstream peopleFile("../../data/pessoa 1.txt");
     fclose(out);
     out = fopen("./personsPancakes.csv", "a");
-    vector<Person> personsVector;
+    vector<string> personsVector;
 
     fprintf(out, "amount,time,compairs,swaps\n");
 
@@ -75,22 +75,29 @@ int main(){
     int j = 0;
 
     string word;
-    while (i < 1000) {
+    while (getline(peopleFile, word)) {
         j = 0;
-        while (j <= 1000){
-          getline(peopleFile, word);
-          cout << word[0] << endl ;
+        while (j <= 999){
+          personsVector.push_back(word);
           j++;
         }
+        cout << personsVector.size() << endl;
         clock_t start, end;
+        printVector(personsVector);
         start = clock();
+        pancakeSort(personsVector);
         end = clock();
 
         double elapsed = (end - start) / (double) CLOCKS_PER_SEC * 1000;
-        peopleFile.clear();
+        // printVector(numberVector);
         cout << personsVector.size() << endl;
+        cout << elapsed;
         fprintf(out, "%lu,%f,%li,%li\n",personsVector.size(), elapsed, compairsons,swaps);
         i += 1000;
+        if(i == 100000){
+          break;
+        }
+        peopleFile.clear();
         // printVector(personsVector);
         compairsons = 0;
         swaps = 0;
