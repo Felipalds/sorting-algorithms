@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 // pega máximo
 // flipa começo até máximo
@@ -16,7 +19,6 @@ func array_max(array []int) int {
 			max = array[i]
 		}
 	}
-	fmt.Println(max)
 	return i
 }
 
@@ -30,7 +32,6 @@ func flip_array(array *[]int, index int) {
 		start += 1
 		index -= 1
 	}
-	fmt.Println(array)
 }
 
 func pancake_sort(array *[]int) {
@@ -51,7 +52,14 @@ func pancake_sort(array *[]int) {
 }
 
 func main() {
-	myArray := []int{4, 2, 3, 5, 10, 2, 1, 10, 2, 2}
-	pancake_sort(&myArray)
-	fmt.Println(myArray)
+	numbers_file, _ := os.Open("../../data/numeros 1.txt")
+	numbers_array := []int{}
+	for i := 0; i < 100000; i++ {
+		var number int
+		fmt.Fscanf(numbers_file, "%d\n", &number)
+		numbers_array = append(numbers_array, number)
+	}
+	pancake_sort(&numbers_array)
+	fmt.Println(numbers_array)
+
 }
