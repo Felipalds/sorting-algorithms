@@ -16,126 +16,107 @@ void vprint(std::vector<T> x)
 }
 
 template <typename T>
-std::vector<T> concatenate(std::vector<T> x, std::vector<T> y)
+void quick_sort(std::vector<T> &array, int low, int high, int *details)
 {
-    for (int i = 0; i < y.size(); i++)
+    int i = low, j = high - 1;
+    T pivot, aux;
+    pivot = array[(i + j) / 2];
+    while (i <= j)
     {
-        x.push_back(y[i]);
-    }
-    return x;
-}
-
-template <typename T>
-void quick_sort(std::vector<T> &array, int *details)
-{
-    std::vector<T> great_array;
-    std::vector<T> equal_array;
-    std::vector<T> lesser_array;
-    if (array.size() > 1)
-    {
-        T pivot = array[0];
-        for (int i = 0; i < array.size(); i++)
+        details[0]++;
+        while (array[i] < pivot && i < high)
         {
-            if (array[i] < pivot)
-            {
-                lesser_array.push_back(array[i]);
-            }
-            else if (array[i] == pivot)
-            {
-                details[0]++;
-                equal_array.push_back(array[i]);
-            }
-            else
-            {
-                details[1]++;
-                great_array.push_back(array[i]);
-            }
+            details[0] += 3;
+            i++;
         }
-        quick_sort(lesser_array, details);
-        quick_sort(great_array, details);
-        std::vector<T> new_array = concatenate(concatenate(lesser_array, equal_array), great_array);
-        array.swap(new_array);
+
+        while (array[j] > pivot && j > low)
+        {
+            details[0] += 3;
+            j--;
+        }
+
+        if (i <= j)
+        {
+            aux = array[i];
+            array[i] = array[j];
+            array[j] = aux;
+            i++;
+            j--;
+            details[1]++;
+        }
+        details[0]++;
+    }
+    if (j > low)
+    {
+        details[0]++;
+        quick_sort(array, low, j + 1, details);
+        quick_sort(array, i, high, details);
     }
 }
 
 template <typename T, typename D>
-void quick_sort(std::vector<T> &array, std::vector<D> &arrayX, int *details)
+void quick_sort(std::vector<T> &array, std::vector<D> &arrayX, int low, int high, int *details)
 {
-    if (array.size() != arrayX.size())
+    int i = low, j = high - 1;
+    T pivot, aux;
+    D pivotX, auxX;
+    pivot = array[(i + j) / 2];
+    pivotX = arrayX[(i + j) / 2];
+    while (i <= j)
     {
-        std::cout << "Error during co-sort.\n";
-        exit(1);
-    }
-    std::vector<T> great_array;
-    std::vector<T> equal_array;
-    std::vector<T> lesser_array;
-    std::vector<D> great_arrayX;
-    std::vector<D> equal_arrayX;
-    std::vector<D> lesser_arrayX;
-    if (array.size() > 1)
-    {
-        T pivot = array[0];
-        for (int i = 0; i < array.size(); i++)
+        details[0]++;
+        while (array[i] < pivot || (array[i] == pivot && arrayX[i] < pivotX) && i < high)
         {
-            if (array[i] < pivot)
-            {
-                details[0]++;
-                details[1]++;
-                lesser_array.push_back(array[i]);
-                lesser_arrayX.push_back(arrayX[i]);
-            }
-            else if (array[i] == pivot)
-            {
-                details[0]++;
-                if (arrayX[i] < arrayX[0])
-                {
-                    details[0]++;
-                    details[1]++;
-                    lesser_array.push_back(array[i]);
-                    lesser_arrayX.push_back(arrayX[i]);
-                }
-                else if (arrayX[i] > arrayX[0])
-                {
-                    details[0]++;
-                    details[1]++;
-                    great_array.push_back(array[i]);
-                    great_arrayX.push_back(arrayX[i]);
-                }
-                else
-                {
-                    equal_array.push_back(array[i]);
-                    equal_arrayX.push_back(arrayX[i]);
-                }
-            }
-            else
-            {
-                details[1]++;
-                great_array.push_back(array[i]);
-                great_arrayX.push_back(arrayX[i]);
-            }
+            details[0] += 7;
+            i++;
         }
-        quick_sort(lesser_array, lesser_arrayX, details);
-        quick_sort(great_array, great_arrayX, details);
-        std::vector<T> new_array = concatenate(concatenate(lesser_array, equal_array), great_array);
-        std::vector<D> new_arrayX = concatenate(concatenate(lesser_arrayX, equal_arrayX), great_arrayX);
-        array.swap(new_array);
-        arrayX.swap(new_arrayX);
+
+        while (array[j] > pivot || (array[j] == pivot && arrayX[j] > pivotX) && j > low)
+        {
+            details[0] += 7;
+            j--;
+        }
+
+        if (i <= j)
+        {
+            aux = array[i];
+            array[i] = array[j];
+            array[j] = aux;
+            auxX = arrayX[i];
+            arrayX[i] = arrayX[j];
+            arrayX[j] = auxX;
+            i++;
+            j--;
+            details[1] += 2;
+        }
+        details[0]++;
+    }
+    if (j > low)
+    {
+        details[0]++;
+        quick_sort(array, arrayX, low, j + 1, details);
+    }
+    if (i < high)
+    {
+        details[0]++;
+        quick_sort(array, arrayX, i, high, details);
     }
 }
 
 template <typename T, typename D>
 int *dquick_sort(std::vector<T> &array, std::vector<D> &arrayX)
 {
-    int *results = (int*) calloc(2, sizeof(int));
-    quick_sort(array, arrayX, results);
+    int *results = (int *)calloc(2, sizeof(int));
+    quick_sort(array, arrayX, 0, array.size(), results);
     return results;
 }
 
 template <typename T>
 int *dquick_sort(std::vector<T> &array)
 {
-    int *results = (int*) calloc(2, sizeof(int));
-    quick_sort(array, results);
+    int *results = (int *)calloc(2, sizeof(int));
+    quick_sort(array, 0, array.size(), results);
     return results;
 }
 
@@ -197,6 +178,10 @@ clock_t persons_test(int times, int **results)
     clock_t start, end;
     start = clock();
     (*results) = dquick_sort(numbers, persons);
+    for (int i = 0; i < 100; i++)
+    {
+        std::cout << numbers[i] << ' ' << persons[i] << '\n';
+    }
     end = clock();
     people_file.close();
     return (end - start);
@@ -205,34 +190,33 @@ clock_t persons_test(int times, int **results)
 void matrix_to_csv(std::string file_path, std::vector<std::vector<std::string>> string_matrix, std::vector<std::string> columns)
 {
     std::ofstream csv_file(file_path);
-    for (int i = 0; i < columns.size()-1; i++)
+    for (int i = 0; i < columns.size() - 1; i++)
     {
         csv_file << columns[i] << ',';
     }
-    csv_file << columns[columns.size()-1] << '\n';
+    csv_file << columns[columns.size() - 1] << '\n';
     for (int i = 0; i < string_matrix.size(); i++)
     {
-        for (int j = 0; j < string_matrix[0].size()-1; j++)
+        for (int j = 0; j < string_matrix[0].size() - 1; j++)
         {
             csv_file << string_matrix[i][j] << ',';
         }
-        csv_file << string_matrix[i][string_matrix[0].size()-1] << '\n';
+        csv_file << string_matrix[i][string_matrix[0].size() - 1] << '\n';
     }
     csv_file.close();
 }
 
-const std::vector<std::string> COLUMNS{"time","amount","compairs","swaps"}; 
+const std::vector<std::string> COLUMNS{"time", "amount", "compairs", "swaps"};
 
 int main()
 {
-    
     // Números
     std::vector<std::string> registers, comparisons, swaps, times_elapsed;
     std::vector<std::vector<std::string>> data;
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = numbers_test(i, &results) / (double) CLOCKS_PER_SEC;
+        double elapsed = numbers_test(i, &results) / (double)CLOCKS_PER_SEC;
         std::cout << "Registers: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
@@ -250,7 +234,7 @@ int main()
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = names_test(i, &results) / (double) CLOCKS_PER_SEC;
+        double elapsed = names_test(i, &results) / (double)CLOCKS_PER_SEC;
         std::cout << "Iterations: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
@@ -268,7 +252,7 @@ int main()
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = persons_test(i, &results) / (double) CLOCKS_PER_SEC;
+        double elapsed = persons_test(i, &results) / (double)CLOCKS_PER_SEC;
         std::cout << "Iterations: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
