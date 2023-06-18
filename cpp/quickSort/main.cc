@@ -178,10 +178,6 @@ clock_t persons_test(int times, int **results)
     clock_t start, end;
     start = clock();
     (*results) = dquick_sort(numbers, persons);
-    for (int i = 0; i < 100; i++)
-    {
-        std::cout << numbers[i] << ' ' << persons[i] << '\n';
-    }
     end = clock();
     people_file.close();
     return (end - start);
@@ -216,7 +212,7 @@ int main()
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = numbers_test(i, &results) / (double)CLOCKS_PER_SEC;
+        double elapsed = numbers_test(i, &results) / (double)CLOCKS_PER_SEC*1000;
         std::cout << "Registers: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
@@ -234,7 +230,7 @@ int main()
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = names_test(i, &results) / (double)CLOCKS_PER_SEC;
+        double elapsed = names_test(i, &results) / (double)CLOCKS_PER_SEC*1000;
         std::cout << "Iterations: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
@@ -252,7 +248,7 @@ int main()
     for (int i = 1000; i <= 100000; i = i + 1000)
     {
         int *results = nullptr;
-        double elapsed = persons_test(i, &results) / (double)CLOCKS_PER_SEC;
+        double elapsed = persons_test(i, &results) / (double)CLOCKS_PER_SEC*1000;
         std::cout << "Iterations: " << i << '\n';
         std::cout << "Comparisons: " << results[0] << '\n';
         std::cout << "Swaps: " << results[1] << '\n';
