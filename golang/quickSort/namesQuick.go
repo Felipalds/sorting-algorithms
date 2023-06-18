@@ -1,5 +1,6 @@
 package main
 
+
 import (
 	"bufio"
 	"fmt"
@@ -13,43 +14,58 @@ var swapsTotal int
 func main() {
    
 
-  //Nomes
+  //Números
   in, inerror := os.Open("../../data/nomes 1.txt")
+  out, outError := os.Create("./namesOut.csv")
+
   if inerror != nil {
       fmt.Println("Erro ao abrir o arquivo!")
-      panic(0);
+      panic(1);
   }
 
+  if outError != nil {
+      fmt.Println("Erro ao criar o arquivo!")
+      panic(1)
+  }
 
-  numberReader := bufio.NewReader(in)
+  defer out.Close()
 
-  i := 0
   var namesArray []string
 
-  start := time.Now()
+  numberReader := bufio.NewReader(in)
+  numberWriter := bufio.NewWriter(out)
 
-  for i < 100000 {
+  defer numberWriter.Flush()
+  fmt.Fprintf(numberWriter, "amount,time,compairs,swaps\n")
+
+
+  i := 0
+  for i < 100000 { //Here starts the count till 100k
     j := 0
     var name string
-    for j <= 999 {
-      fmt.Fscanf(numberReader, "%s\n", name)
-      namesArray= append(namesArray, name)
+    for j <= 999 {// Firts we will get 1000, then 0-2000...
+      fmt.Fscanf(numberReader, "%s", &name)
+      namesArray = append(namesArray, name)
       j++
     }
-    fmt.Println(len(namesArray))
+    
+    start := time.Now()
     quickSort(&namesArray, 0, len(namesArray))
+
+    // Writing in file
+    end := time.Now()
+    elapsed := end.Sub(start)
+    fmt.Fprintf(numberWriter, "%d,%d,%d,%d\n", len(namesArray), elapsed, comparsionTotal, swapsTotal)
+    comparsionTotal = 0
+    swapsTotal = 0
     numberReader.Reset(in)
     i+=1000
   }
-  elapsed := time.Since(start)
-  fmt.Printf("\n\n\n")
-  fmt.Printf("FUNCTION TOOK %s\n", elapsed)
-  fmt.Println("Total comparsions: ", comparsionTotal)
-  fmt.Println("Total swaps: ", swapsTotal)
 }
 
 func quickSort(namesArray *[] string, low int, high int){
-    var i, j, pivo, aux int
+    var i, j int
+    var pivo, aux string
     i = low
     j = high - 1
     pivo = (*namesArray)[(i+j)/2]
