@@ -1,4 +1,3 @@
-#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include <vector>
@@ -58,13 +57,16 @@ void pancakeSort(vector<int>& numVector){
 FILE *in, *out;
 int main(){
     in = fopen("../../data/numeros 1.txt", "r");
-    out = fopen("./numberPancakes.csv", "w+");
-
+    out = fopen("./numberPancakes.csv", "w");
+    fclose(out);
+    out = fopen("./numberPancakes.csv", "a");
     vector<int> numberVector;
+
+    fprintf(out, "amount,time,compairs,swaps\n");
 
     int i = 0;
     int j = 0;
-    while (i < 100000) {
+    while (i < 1000) {
         j = 0;
         while (j <= 999){
           int num;
@@ -72,17 +74,20 @@ int main(){
           numberVector.push_back(num);
           j++;
         }
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        clock_t start, end;
+        start = clock();
         pancakeSort(numberVector);
+        end = clock();
+
+        double elapsed = (end - start) / (double) CLOCKS_PER_SEC * 1000;
         // printVector(numberVector);
         cout << numberVector.size() << endl;
-        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-        std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
-        cout << "compairsons = " << compairsons << endl;
-        cout << "swaps = " << swaps << endl;
+        fprintf(out, "%lu,%f,%li,%li\n",numberVector.size(), elapsed, compairsons,swaps);
         i += 1000;
         rewind(in);
         compairsons = 0;
         swaps = 0;
     }
+    fclose(in);
+    fclose(out);
 }
