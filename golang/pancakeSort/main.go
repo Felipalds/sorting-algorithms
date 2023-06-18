@@ -133,7 +133,9 @@ func main() {
 		details := []int{0, 0}
 		start := time.Now()
 		pancake_sort(&numbers_array, &details)
-		end := time.Since(start).Seconds()
+		end := time.Since(start).Milliseconds()
+		fmt.Println(numbers_array)
+		os.Exit(1)
 		line := []string{fmt.Sprint(end), fmt.Sprint(t), fmt.Sprint(details[0]), fmt.Sprint(details[1])}
 		data = append(data, line)
 		numbers_file.Close()
@@ -154,7 +156,7 @@ func main() {
 		details := []int{0, 0}
 		start := time.Now()
 		pancake_sort_str(&names_array, &details)
-		end := time.Since(start).Seconds()
+		end := time.Since(start).Milliseconds()
 		line := []string{fmt.Sprint(end), fmt.Sprint(t), fmt.Sprint(details[0]), fmt.Sprint(details[1])}
 		data = append(data, line)
 		names_file.Close()
@@ -180,7 +182,7 @@ func main() {
 		details := []int{0, 0}
 		start := time.Now()
 		pancake_sort_par(&ids_array, &persons_array, &details)
-		end := time.Since(start).Seconds()
+		end := time.Since(start).Milliseconds()
 		line := []string{fmt.Sprint(end), fmt.Sprint(t), fmt.Sprint(details[0]), fmt.Sprint(details[1])}
 		data = append(data, line)
 		persons_file.Close()
