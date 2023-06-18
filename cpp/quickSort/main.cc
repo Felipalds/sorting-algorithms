@@ -26,11 +26,7 @@ std::vector<T> concatenate(std::vector<T> x, std::vector<T> y)
 }
 
 template <typename T>
-<<<<<<< HEAD
 void quick_sort(std::vector<T> &array, int *details)
-=======
-void quick_sort(std::vector<T> &array)
->>>>>>> 5ff0532 (data-integration-and-inplace-adjust)
 {
     std::vector<T> great_array;
     std::vector<T> equal_array;
@@ -42,24 +38,15 @@ void quick_sort(std::vector<T> &array)
         {
             if (array[i] < pivot)
             {
-<<<<<<< HEAD
-                details[0]++;
-                details[1]++;
-=======
->>>>>>> 5ff0532 (data-integration-and-inplace-adjust)
                 lesser_array.push_back(array[i]);
             }
             else if (array[i] == pivot)
             {
-<<<<<<< HEAD
                 details[0]++;
-=======
->>>>>>> 5ff0532 (data-integration-and-inplace-adjust)
                 equal_array.push_back(array[i]);
             }
             else
             {
-<<<<<<< HEAD
                 details[1]++;
                 great_array.push_back(array[i]);
             }
@@ -69,73 +56,6 @@ void quick_sort(std::vector<T> &array)
         std::vector<T> new_array = concatenate(concatenate(lesser_array, equal_array), great_array);
         array.swap(new_array);
     }
-=======
-                great_array.push_back(array[i]);
-            }
-        }
-        quick_sort(lesser_array);
-        quick_sort(great_array);
-        std::vector<T> new_array = concatenate(concatenate(lesser_array, equal_array), great_array);
-        array.swap(new_array);
-    }
-}
-
-template <typename T, typename D>
-void quick_sort(std::vector<T> &array, std::vector<D> &arrayX)
-{
-    if (array.size() != arrayX.size())
-    {
-        std::cout << "Error during co-sort.\n";
-        exit(1);
-    }
-    std::vector<T> great_array;
-    std::vector<T> equal_array;
-    std::vector<T> lesser_array;
-    std::vector<D> great_arrayX;
-    std::vector<D> equal_arrayX;
-    std::vector<D> lesser_arrayX;
-    if (array.size() > 1)
-    {
-        T pivot = array[0];
-        for (int i = 0; i < array.size(); i++)
-        {
-            if (array[i] < pivot)
-            {
-                lesser_array.push_back(array[i]);
-                lesser_arrayX.push_back(arrayX[i]);
-            }
-            else if (array[i] == pivot)
-            {
-                if (arrayX[i] < arrayX[0])
-                {
-                    lesser_array.push_back(array[i]);
-                    lesser_arrayX.push_back(arrayX[i]);
-                }
-                else if (arrayX[i] > arrayX[0])
-                {
-                    great_array.push_back(array[i]);
-                    great_arrayX.push_back(arrayX[i]);
-                }
-                else
-                {
-                    equal_array.push_back(array[i]);
-                    equal_arrayX.push_back(arrayX[i]);
-                }
-            }
-            else
-            {
-                great_array.push_back(array[i]);
-                great_arrayX.push_back(arrayX[i]);
-            }
-        }
-        quick_sort(lesser_array, lesser_arrayX);
-        quick_sort(great_array, great_arrayX);
-        std::vector<T> new_array = concatenate(concatenate(lesser_array, equal_array), great_array);
-        std::vector<D> new_arrayX = concatenate(concatenate(lesser_arrayX, equal_arrayX), great_arrayX);
-        array.swap(new_array);
-        arrayX.swap(new_arrayX);
-    }
->>>>>>> 5ff0532 (data-integration-and-inplace-adjust)
 }
 
 template <typename T, typename D>
@@ -301,11 +221,10 @@ void matrix_to_csv(std::string file_path, std::vector<std::vector<std::string>> 
     csv_file.close();
 }
 
-const std::vector<std::string> COLUMNS{"tempo-de-exeução","quantidade-dados","comparações","trocas"}; 
+const std::vector<std::string> COLUMNS{"time","amount","compairs","swaps"}; 
 
 int main()
 {
-<<<<<<< HEAD
     
     // Números
     std::vector<std::string> registers, comparisons, swaps, times_elapsed;
@@ -364,63 +283,3 @@ int main()
     matrix_to_csv("qsort_pessoas.csv", data, COLUMNS);
     return 0;
 }
-=======
-    // Números
-    std::ifstream numbers_file("../../data/numeros 1.txt");
-    std::vector<int> numbers_array;
-    for (int i = 0; i < 100000; i++)
-    {
-        std::string number;
-        getline(numbers_file, number);
-        numbers_array.push_back(stoi(number));
-    }
-    quick_sort(numbers_array);
-    vprint(numbers_array);
-    numbers_file.close();
-    // Nomes
-    std::ifstream names_file("../../data/nomes 1.txt");
-    std::vector<std::string> names;
-    for (int i = 0; i < 100000; i++)
-    {
-        std::string name;
-        getline(names_file, name);
-        names.push_back(name);
-    }
-    quick_sort(names);
-    names_file.close();
-    // Pessoas
-    std::vector<std::string> persons;
-    std::vector<int> numbers;
-    std::ifstream people_file("../../data/pessoa 1.txt");
-    std::string word;
-    for (int i = 0; i < 100000; i++)
-    {
-        if (i % 2 == 0)
-        {
-            people_file >> word;
-            numbers.push_back(std::stoi(word));
-        }
-        else
-        {
-            getline(people_file, word);
-            persons.push_back(word);
-        }
-    }
-    int index = 0;
-    while (1)
-    {
-        std::cin >> index;
-        if (index < 0) break;
-        std::cout << numbers[index] << ' ' << persons[index] << '\n';
-    }
-    quick_sort(numbers, persons);
-    index = 0;
-    while (1)
-    {
-        std::cin >> index;
-        if (index < 0) break;
-        std::cout << numbers[index] << ' ' << persons[index] << '\n';
-    }
-    return 0;
-}
->>>>>>> 5ff0532 (data-integration-and-inplace-adjust)
