@@ -47,7 +47,7 @@ func main() {
 		persons_file, _ := os.Open("../../data/pessoa 1.txt")
 		scanner := bufio.NewScanner(persons_file)
 		ids_array := []int{}
-		personsArray := []string{}
+		personsArray := []Person{}
 		for i := 0; i < i; i++ {
 			scanner.Scan()
 			line := scanner.Text()
@@ -55,7 +55,7 @@ func main() {
 			id, _ := strconv.Atoi(parts[0])
 			name := strings.Join(parts[1:], " ")
 			ids_array = append(ids_array, id)
-			personsArray = append(personsArray, name)
+			personsArray = append(personsArray, Person{name, id})
 		}
 
 		start := time.Now()
