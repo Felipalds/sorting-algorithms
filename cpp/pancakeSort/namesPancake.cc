@@ -66,7 +66,7 @@ int main(){
 
     int i = 0;
     int j = 0;
-    while (i < 100000) {
+    while (i < 10000) {
         j = 0;
         while (j <= 999){
           std::string name;
@@ -86,7 +86,6 @@ int main(){
         cout << namesVector.size() << endl;
         fprintf(out, "%lu,%f,%li,%li\n",namesVector.size(), elapsed, compairsons,swaps);
         i += 1000;
-        printVector(namesVector);
         compairsons = 0;
         swaps = 0;
     }

@@ -94,7 +94,7 @@ int main(){
         cout << elapsed;
         fprintf(out, "%lu,%f,%li,%li\n",personsVector.size(), elapsed, compairsons,swaps);
         i += 1000;
-        if(i == 100000){
+        if(i == 10000){
           break;
         }
         peopleFile.clear();
